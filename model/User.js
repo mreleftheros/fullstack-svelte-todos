@@ -8,7 +8,7 @@ class User {
       throw new Error('Invalid data.');
 
     return {
-      username: username.trim(),
+      username: username.trim().toLowerCase(),
       password,
     };
   }
@@ -41,6 +41,23 @@ class User {
       username,
       id: insertedId.toString(),
     };
+  }
+
+  static async login(username, password) {
+    username = username.toLowerCase();
+
+    const user = await col.findOne({username});
+
+    if (!user) throw new Error('Invalid credentials.');
+
+    const passwordMatches = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatches) throw new Error('Invalid credentials.');
+
+    return {
+      username: user.username,
+      id: user._id.toString()
+    }
   }
 }
 

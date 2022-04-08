@@ -15,3 +15,16 @@ exports.post_signup = async (req, res) => {
     return res.status(400).json({ error: e.message });
   }
 };
+
+exports.post_login = async (req, res) => {
+  try {
+    const { username, id } = await User.login(
+      req.body.username,
+      req.body.password
+    );
+    
+    return res.json({ data: { username, id } });
+  } catch (e) {
+    return res.status(400).json({ error: e.message });
+  }
+};
