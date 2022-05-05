@@ -1,0 +1,22 @@
+@use '../abstract/' as *;
+
+.navlinks {
+  flex: 1;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+
+  &-link {
+    background: $blue;
+    color: $white;
+    font-size: 2rem;
+    margin-right: 1rem;
+    padding: .5rem 2rem;
+    border-radius: 0.5rem;
+    transition: transform .15s ease;
+
+    &:hover {
+      transform: scale(0.95);
+    }
+  }
+}

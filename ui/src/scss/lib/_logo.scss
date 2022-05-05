@@ -1,6 +1,8 @@
 @use '../abstract/' as *;
 
 .logo {
+  flex-basis: 25rem;
+  border-right: solid .5rem $black;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8,7 +10,6 @@
   &-title {
     font-size: 4rem;
     font-family: cursive;
-    padding: 0 1rem;
     letter-spacing: .2rem;
     transition: opacity .15s ease;
 
