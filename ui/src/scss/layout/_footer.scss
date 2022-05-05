@@ -1,6 +1,15 @@
 @use '../abstract/' as *;
 
 .footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: $black;
   color: $white;
+
+  &-text {
+    text-align: center;
+    font-style: italic;
+    user-select: none;
+  }
 }
