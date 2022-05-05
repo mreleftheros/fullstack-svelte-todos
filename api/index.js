@@ -11,5 +11,5 @@ connect()
   })
   .catch(e => {
     console.log(e.message);
-    process.exit();
+    process.exit(1);
   });

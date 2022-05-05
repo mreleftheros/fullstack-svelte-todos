@@ -1,0 +1,11 @@
+@use './scss/abstract/' as *;
+@use './scss/base/' as *;
+@use './scss/layout/' as *;
+@use './scss/lib/' as *;
+
+#root {
+  display: grid;
+  grid-template-rows: minmax(auto, 5rem) 1fr minmax(auto, 3rem);
+  min-height: 100vh;
+  color: $black;
+}

@@ -1,0 +1,19 @@
+@use '../abstract/' as *;
+
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &-title {
+    font-size: 4rem;
+    font-family: cursive;
+    padding: 0 1rem;
+    letter-spacing: .2rem;
+    transition: opacity .15s ease;
+
+    &:hover {
+      opacity: .5;
+    }
+  }
+}

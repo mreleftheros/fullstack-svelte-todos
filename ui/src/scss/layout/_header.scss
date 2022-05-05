@@ -1,0 +1,10 @@
+@use '../abstract/' as *;
+
+.header {
+  background-color: $green;
+
+  &-nav {
+    display: flex;
+    height: 100%;
+  }
+}
