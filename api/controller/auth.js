@@ -12,10 +12,14 @@ exports.me_get = (req, res) => {
 exports.signup_post = async (req, res) => {
   try {
     try {
-      const { id, username } = await User.signup(
-        req.body.username,
-        req.body.password
-      );
+      const result = await User.signup(req.body.username, req.body.password);
+
+      if (!result.ok) {
+        const { ok, ...err } = result;
+        return res.status(400).json({ ...err, error: 'Validation failed.' });
+      }
+
+      const { id, username } = result;
 
       const token = createToken(id, username);
 
@@ -27,7 +31,7 @@ exports.signup_post = async (req, res) => {
 
       return res.status(201).json({ id, username, token });
     } catch (err) {
-      return res.status(400).json({ error: err });
+      return res.status(400).json({ error: err.message });
     }
   } catch (err) {
     return res.status(500).json({ error: err.message });
@@ -52,7 +56,7 @@ exports.login_post = async (req, res) => {
 
       return res.json({ username, id });
     } catch (err) {
-      return res.status(400).json({ error: err });
+      return res.status(400).json({ error: err.message });
     }
   } catch (err) {
     return res.status(500).json({ error: err.message });

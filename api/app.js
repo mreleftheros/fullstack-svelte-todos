@@ -22,6 +22,6 @@ app.use(cors());
 //   app.get('/', (req, res) => res.send('Please set to production'))
 // }
 
-app.use('/auth', auth);
+app.use('/api/auth', auth);
 
 module.exports = app;

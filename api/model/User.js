@@ -31,7 +31,10 @@ class User {
       err.password = 'Password must contain at least 6 characters.';
     }
 
-    return err;
+    return {
+      isValid: Object.keys(err).length === 0,
+      err,
+    };
   }
 
   static async isUnique(username) {
@@ -43,8 +46,9 @@ class User {
   static async signup(username, password) {
     ({ username, password } = this.format(username, password));
 
-    const err = this.validate(username, password);
-    if (Object.keys(err).length > 0) throw err;
+    const { isValid, err } = this.validate(username, password);
+
+    if (!isValid) return { ...err, ok: false };
 
     const isUnique = await this.isUnique(username);
     if (!isUnique) throw { message: 'Username already exists.' };
@@ -58,6 +62,7 @@ class User {
     if (!acknowledged) throw { message: 'Could not save user to database.' };
 
     return {
+      ok: true,
       username,
       id: insertedId.toString(),
     };
