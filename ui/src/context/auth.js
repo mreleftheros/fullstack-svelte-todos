@@ -1,13 +1,33 @@
-import { createContext } from "react";
+import { createContext, useEffect, useReducer } from 'react';
+import { reducer } from '../reducer/auth';
 
-export const authContext = createContext();
+export const AuthContext = createContext();
 
-const AuthProvider = ({children}) => {
+const initialState = {
+  user: null,
+  loading: false
+};
+
+const AuthProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    console.log('effect');
+  }, []);
+
+  const getUser = async () => {
+    try {
+      await fetch('/auth/me')
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <authContext.Provider>
+    <AuthContext.Provider value={{ ...state }}>
       {children}
-    </authContext.Provider>
-  )
-}
+    </AuthContext.Provider>
+  );
+};
 
 export default AuthProvider;

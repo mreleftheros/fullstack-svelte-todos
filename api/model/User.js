@@ -16,10 +16,22 @@ class User {
     };
   }
 
-  static isValid(username, password) {
-    if (!username || username.length < 4 || !password || password.length < 6)
-      return false;
-    return true;
+  static validate(username, password) {
+    let err = {};
+
+    if (!username) {
+      err.username = 'Must provide username.';
+    } else if (username.length < 4) {
+      err.username = 'Username must contain at least 4 characters.';
+    }
+
+    if (!password) {
+      err.password = 'Must provide password.';
+    } else if (password.length < 6) {
+      err.password = 'Password must contain at least 6 characters.';
+    }
+
+    return err;
   }
 
   static async isUnique(username) {
@@ -31,11 +43,11 @@ class User {
   static async signup(username, password) {
     ({ username, password } = this.format(username, password));
 
-    const isValid = this.isValid(username, password);
-    if (!isValid) throw Error('Invalid credentials.');
+    const err = this.validate(username, password);
+    if (Object.keys(err).length > 0) throw err;
 
     const isUnique = await this.isUnique(username);
-    if (!isUnique) throw Error('Username already exists.');
+    if (!isUnique) throw { message: 'Username already exists.' };
 
     const hashedPassword = await argon.hash(password);
     const { acknowledged, insertedId } = await col.insertOne({
@@ -43,7 +55,7 @@ class User {
       password: hashedPassword,
     });
 
-    if (!acknowledged) throw Error('Could not save user to the database.');
+    if (!acknowledged) throw { message: 'Could not save user to database.' };
 
     return {
       username,
@@ -54,11 +66,11 @@ class User {
   static async login(username, password) {
     const user = await col.findOne({ username });
 
-    if (!user) throw new Error('Invalid credentials.');
+    if (!user) throw { message: 'Invalid credentials.' };
 
     const passwordMatches = await argon.verify(user.password, password);
 
-    if (!passwordMatches) throw new Error('Invalid credentials.');
+    if (!passwordMatches) throw { message: 'Invalid credentials.' };
 
     return {
       username: user.username,
