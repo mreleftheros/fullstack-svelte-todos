@@ -1,4 +1,4 @@
-const { getCol } = require('../lib/db');
+const { getCol, getId } = require('../lib/db');
 const col = getCol('users');
 const argon = require('argon2');
 
@@ -81,6 +81,16 @@ class User {
       username: user.username,
       id: user._id.toString(),
     };
+  }
+
+  static async findById(id) {
+    const result = await col.findOne({ _id: getId(id) });
+    
+    if (!result) throw { message: 'No id found in database.'};
+
+    delete result.password;
+
+    return result;
   }
 }
 

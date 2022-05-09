@@ -1,14 +1,6 @@
 const User = require('../model/User');
 const { createToken } = require('../utils/auth');
 
-exports.me_get = (req, res) => {
-  if (!req.user) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-
-  return res.json(req.user);
-};
-
 exports.signup_post = async (req, res) => {
   try {
     try {
@@ -61,4 +53,12 @@ exports.login_post = async (req, res) => {
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
+};
+
+exports.me_get = (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  return res.json(req.user);
 };
