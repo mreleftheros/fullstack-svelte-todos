@@ -6,17 +6,25 @@
   justify-content: end;
   align-items: center;
 
+  &-item {
+    margin-right: 1rem;
+    font-size: 2rem;
+  }
+
+  &-name {
+    color: $blue;
+  }
+
   &-link {
     display: block;
     background: $blue;
     cursor: pointer;
     color: $white;
-    font-size: 2rem;
-    margin-right: 1rem;
-    padding: .75rem 2.5rem;
+    
+    padding: 0.75rem 2.5rem;
     border-radius: 0.5rem;
-    letter-spacing: .1rem;
-    transition: transform .15s ease;
+    letter-spacing: 0.1rem;
+    transition: transform 0.15s ease;
 
     &:hover {
       transform: scale(0.975);

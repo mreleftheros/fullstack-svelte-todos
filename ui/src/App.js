@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AuthProvider from './context/auth';
 import Logo from './lib/Logo';
 import NavLinks from './lib/NavLinks';
+import AuthBox from './pages/AuthBox';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
 
@@ -19,6 +20,8 @@ const App = () => {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/dashboard' element={<Dashboard />} />
+            <Route path='/login' element={<AuthBox />} />
+            <Route path='/signup' element={<AuthBox signupMode />} />
           </Routes>
         </main>
         <footer className='footer'>

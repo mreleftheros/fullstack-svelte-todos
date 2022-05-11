@@ -1,6 +1,17 @@
-const Button = ({ text = '', type = 'button', color = 'blue' }) => {
+const Button = ({
+  text = '',
+  type = 'button',
+  color = 'blue',
+  onClick = null,
+  disabled = false,
+}) => {
   return (
-    <button className={`btn btn-${color}`} type={type}>
+    <button
+      disabled={disabled}
+      onClick={onClick}
+      className={`btn btn-${color}`}
+      type={type}
+    >
       {text}
     </button>
   );

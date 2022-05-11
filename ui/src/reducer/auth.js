@@ -6,6 +6,11 @@ export const reducer = (state, action) => {
         user: null,
         isLoading: false,
       };
+    case 'SET_USER':
+      return {
+        ...state,
+        user: { ...action.payload },
+      };
     default:
       throw new Error('No such action.');
   }

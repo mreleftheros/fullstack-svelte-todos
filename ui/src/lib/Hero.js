@@ -1,9 +1,13 @@
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/auth';
 import Button from './Button';
 
 const Hero = () => {
+  const { user } = useContext(AuthContext);
+
   return (
-    <article className='hero'>
+    <section className='hero'>
       <h2 className='hero-title'>Welcome To The Todos Project</h2>
       <p className='hero-text'>
         This is a fullstack project using the MERN stack. This is a project that
@@ -13,12 +17,14 @@ const Hero = () => {
         Expressjs, using CRUD operations to Mongodb and rendering views using
         Reactjs.
       </p>
-      <div className='hero-cta'>
-        <Link to='/login'>
-          <Button text='Get Started' color='greenish' />
-        </Link>
-      </div>
-    </article>
+      {!user && (
+        <div className='hero-cta'>
+          <Link to='/login'>
+            <Button text='Get Started' color='greenish' />
+          </Link>
+        </div>
+      )}
+    </section>
   );
 };
 

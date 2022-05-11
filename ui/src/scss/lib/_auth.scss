@@ -1,0 +1,69 @@
+@use '../abstract/' as *;
+
+.auth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+
+  &-title {
+    margin: 1rem 0 2rem;
+    font-size: 3rem;
+    font-weight: 900;
+    letter-spacing: 0.2rem;
+  }
+
+  &-form {
+    background-color: $blackish;
+    color: $white;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 60rem;
+    padding: 1rem;
+    border-radius: 1rem;
+  }
+
+  &-group {
+    margin-bottom: 2rem;
+  }
+
+  &-label {
+    display: block;
+    font-size: 2.5rem;
+    letter-spacing: 0.1rem;
+    font-weight: 900;
+  }
+
+  &-input {
+    display: block;
+    margin: 0.5rem auto 0;
+    outline: none;
+    border: 0;
+    padding: 0.5rem 2rem;
+    font-size: 2rem;
+    border-radius: 0.5rem;
+    background-color: $blackish;
+    color: inherit;
+  }
+
+  &-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: auto;
+  }
+
+  &-error {
+    color: $error;
+    min-height: 3rem;
+    font-size: 2rem;
+    margin: 1rem 0;
+    text-align: center;
+  }
+
+  &-reminder {
+    margin: .5rem 0;
+    font-size: 1.8rem;
+  }
+}

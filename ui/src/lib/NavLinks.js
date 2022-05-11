@@ -3,28 +3,35 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/auth';
 
 const NavLinks = () => {
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
 
   return (
     <ul className='navlinks'>
       {user ? (
         <>
-          <Link to='/dashboard'>
-            <li className='navlinks-item'>
-              <a className='navlinks-link'>Dashboard</a>
-            </li>
-          </Link>
           <li className='navlinks-item'>
-            <a className='navlinks-link'>Logout</a>
+            <p>
+              Welcome, <span className='navlinks-name'>{user.username}</span>
+            </p>
+          </li>
+          <li className='navlinks-item'>
+            <Link to='/dashboard' className='navlinks-link'>
+              Dashboard
+            </Link>
+          </li>
+          <li className='navlinks-item'>
+            <a className='navlinks-link' onClick={logout}>
+              Logout
+            </a>
           </li>
         </>
       ) : (
         <>
-          <Link to='/login'>
-            <li className='navlinks-item'>
-              <a className='navlinks-link'>Login</a>
-            </li>
-          </Link>
+          <li className='navlinks-item'>
+            <Link to='/login' className='navlinks-link'>
+              Login
+            </Link>
+          </li>
         </>
       )}
     </ul>

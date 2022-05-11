@@ -20,15 +20,15 @@ class User {
     const err = {};
 
     if (!username) {
-      err.username = 'Must provide username.';
+      err.usernameError = 'Must provide username.';
     } else if (username.length < 4) {
-      err.username = 'Username must contain at least 4 characters.';
+      err.usernameError = 'Username must contain at least 4 characters.';
     }
 
     if (!password) {
-      err.password = 'Must provide password.';
+      err.passwordError = 'Must provide password.';
     } else if (password.length < 6) {
-      err.password = 'Password must contain at least 6 characters.';
+      err.passwordError = 'Password must contain at least 6 characters.';
     }
 
     return err;
@@ -63,9 +63,7 @@ class User {
     const passwordMatches = await argon.verify(result.password, password);
 
     if (!passwordMatches) {
-      if (!result) {
-        return { error: 'Invalid credentials.' };
-      }
+      return { error: 'Invalid credentials.' };
     }
 
     return {

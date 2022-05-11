@@ -1,12 +1,13 @@
 @use '../abstract/' as *;
 
 .btn {
+  display: block;
   border: 0;
-  padding: 0.5rem 2rem;
+  padding: 1rem 2.5rem;
   border-radius: 0.5rem;
   cursor: pointer;
   font-size: 2rem;
-  letter-spacing: .1rem;
+  letter-spacing: 0.1rem;
   transition: transform 0.15s ease;
 
   &-blue {
@@ -26,7 +27,12 @@
     color: $black;
   }
 
-  &:hover {
+  &:hover:not(:disabled) {
     transform: scale(0.975);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: auto;
   }
 }

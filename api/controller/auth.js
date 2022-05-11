@@ -62,7 +62,7 @@ exports.me_get = (req, res) => {
 exports.logout_get = (req, res) => {
   try {
     res.clearCookie('access-token');
-    return res.json(true);
+    return res.json({ ok: true });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
