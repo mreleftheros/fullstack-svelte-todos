@@ -1,6 +1,10 @@
+import Hero from '../lib/Hero';
+
 const Home = () => {
   return (
-    <h2>Hello home</h2>
+    <>
+      <Hero />
+    </>
   );
 };
 

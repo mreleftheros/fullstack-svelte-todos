@@ -24,9 +24,9 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    getUser();
-  }, []);
+  // useEffect(() => {
+  //   getUser();
+  // }, []);
 
   return (
     <AuthContext.Provider value={{ ...state }}>{children}</AuthContext.Provider>

@@ -1,0 +1,32 @@
+@use '../abstract/' as *;
+
+.btn {
+  border: 0;
+  padding: 0.5rem 2rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 2rem;
+  letter-spacing: .1rem;
+  transition: transform 0.15s ease;
+
+  &-blue {
+    background-color: $blue;
+  }
+
+  &-green {
+    background-color: $green;
+  }
+
+  &-blueish {
+    background-color: $blueish;
+  }
+
+  &-greenish {
+    background-color: $greenish;
+    color: $black;
+  }
+
+  &:hover {
+    transform: scale(0.975);
+  }
+}
