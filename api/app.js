@@ -4,6 +4,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 const auth = require('./route/auth');
+const todo = require('./route/todo');
 
 app.use(express.json());
 app.use(cookieParser());
@@ -23,5 +24,6 @@ app.use(cors());
 // }
 
 app.use('/api/auth', auth);
+app.use('/api/todos', todo);
 
 module.exports = app;

@@ -7,3 +7,9 @@ exports.createToken = (...data) => {
     expiresIn: seconds,
   });
 };
+
+exports.cookieOptions = {
+  maxAge: seconds * 1000,
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production'
+};

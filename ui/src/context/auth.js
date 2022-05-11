@@ -5,28 +5,31 @@ export const AuthContext = createContext();
 
 const initialState = {
   user: null,
-  loading: false
+  isLoading: false,
 };
 
 const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  useEffect(() => {
-    console.log('effect');
-  }, []);
-
   const getUser = async () => {
     try {
-      await fetch('/auth/me')
+      const res = await fetch('/api/auth/me');
+      const { error } = await res.json();
+      if (error) {
+        dispatch({type: 'RESET_USER'});
+      }
     } catch (err) {
       console.log(err);
+      dispatch({type: 'RESET_USER'});
     }
   };
 
+  useEffect(() => {
+    getUser();
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ ...state }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={{ ...state }}>{children}</AuthContext.Provider>
   );
 };
 

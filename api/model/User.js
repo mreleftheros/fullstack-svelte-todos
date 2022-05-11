@@ -1,5 +1,5 @@
 const { getCol, getId } = require('../lib/db');
-const col = getCol('users');
+const col = getCol('user');
 const argon = require('argon2');
 
 class User {
@@ -17,7 +17,7 @@ class User {
   }
 
   static validate(username, password) {
-    let err = {};
+    const err = {};
 
     if (!username) {
       err.username = 'Must provide username.';
@@ -31,66 +31,57 @@ class User {
       err.password = 'Password must contain at least 6 characters.';
     }
 
-    return {
-      isValid: Object.keys(err).length === 0,
-      err,
-    };
+    return err;
   }
 
-  static async isUnique(username) {
+  static async check(username) {
     const userExists = await col.findOne({ username });
 
-    return !userExists;
+    return !!userExists;
   }
 
   static async signup(username, password) {
-    ({ username, password } = this.format(username, password));
-
-    const { isValid, err } = this.validate(username, password);
-
-    if (!isValid) return { ...err, ok: false };
-
-    const isUnique = await this.isUnique(username);
-    if (!isUnique) throw { message: 'Username already exists.' };
-
     const hashedPassword = await argon.hash(password);
-    const { acknowledged, insertedId } = await col.insertOne({
+
+    const { insertedId } = await col.insertOne({
       username,
       password: hashedPassword,
     });
 
-    if (!acknowledged) throw { message: 'Could not save user to database.' };
-
     return {
-      ok: true,
-      username,
-      id: insertedId.toString(),
+      _id: insertedId.toString(),
     };
   }
 
   static async login(username, password) {
-    const user = await col.findOne({ username });
+    const result = await col.findOne({ username });
 
-    if (!user) throw { message: 'Invalid credentials.' };
+    if (!result) {
+      return { error: 'Invalid credentials.' };
+    }
 
-    const passwordMatches = await argon.verify(user.password, password);
+    const passwordMatches = await argon.verify(result.password, password);
 
-    if (!passwordMatches) throw { message: 'Invalid credentials.' };
+    if (!passwordMatches) {
+      if (!result) {
+        return { error: 'Invalid credentials.' };
+      }
+    }
 
     return {
-      username: user.username,
-      id: user._id.toString(),
+      _id: result._id.toString(),
     };
   }
 
-  static async findById(id) {
+  static async getById(id) {
     const result = await col.findOne({ _id: getId(id) });
-    
-    if (!result) throw { message: 'No id found in database.'};
 
-    delete result.password;
+    if (!result) throw new Error('Id not found.');
 
-    return result;
+    return {
+      _id: result._id.toString(),
+      username: result.username,
+    };
   }
 }
 

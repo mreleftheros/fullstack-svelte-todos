@@ -7,8 +7,8 @@ import Home from './pages/Home';
 
 const App = () => {
   return (
-    <AuthProvider>
-      <Router>
+    <Router>
+      <AuthProvider>
         <header className='header'>
           <nav className='header-nav'>
             <Logo />
@@ -18,14 +18,14 @@ const App = () => {
         <main className='main'>
           <Routes>
             <Route path='/' element={<Home />} />
-            <Route path='/about' element={<About />} />
+            <Route path='/dashboard' element={<About />} />
           </Routes>
         </main>
         <footer className='footer'>
           <p className='footer-text'>Copyright &copy; 2022</p>
         </footer>
-      </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </Router>
   );
 };
 

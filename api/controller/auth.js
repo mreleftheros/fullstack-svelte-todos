@@ -1,56 +1,52 @@
 const User = require('../model/User');
-const { createToken } = require('../utils/auth');
+const { createToken, cookieOptions } = require('../utils/auth');
 
 exports.signup_post = async (req, res) => {
   try {
-    try {
-      const result = await User.signup(req.body.username, req.body.password);
+    const { username, password } = User.format(
+      req.body.username,
+      req.body.password
+    );
 
-      if (!result.ok) {
-        const { ok, ...err } = result;
-        return res.status(400).json({ ...err, error: 'Validation failed.' });
-      }
-
-      const { id, username } = result;
-
-      const token = createToken(id, username);
-
-      res.cookie('access-token', token, {
-        expiresIn: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-      });
-
-      return res.status(201).json({ id, username, token });
-    } catch (err) {
-      return res.status(400).json({ error: err.message });
+    const { err } = User.validate(username, password);
+    if (err) {
+      return res.status(400).json({ ...err, error: 'Validation failed.' });
     }
+
+    const userExists = await User.check(username);
+    if (userExists) {
+      return res.status(400).json({ error: 'Username already exists.' });
+    }
+
+    const { _id } = await User.signup(username, password);
+
+    const token = createToken(_id, username);
+
+    res.cookie('access-token', token, cookieOptions);
+
+    return res.status(201).json({ _id, username, token });
   } catch (err) {
+    console.log(err.message);
     return res.status(500).json({ error: err.message });
   }
 };
 
 exports.login_post = async (req, res) => {
   try {
-    try {
-      const { username, id } = await User.login(
-        req.body.username,
-        req.body.password
-      );
+    const { username, password } = req.body;
 
-      const token = createToken(id, username);
-
-      res.cookie('access-token', token, {
-        expiresIn: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-      });
-
-      return res.json({ username, id });
-    } catch (err) {
-      return res.status(400).json({ error: err.message });
+    const { error, _id } = await User.login(username, password);
+    if (error) {
+      return res.status(404).json({ error: 'Invalid credentials.' });
     }
+
+    const token = createToken(_id, username);
+
+    res.cookie('access-token', token, cookieOptions);
+
+    return res.json({ _id, username, token });
   } catch (err) {
+    console.log(err.message);
     return res.status(500).json({ error: err.message });
   }
 };
@@ -61,4 +57,13 @@ exports.me_get = (req, res) => {
   }
 
   return res.json(req.user);
+};
+
+exports.logout_get = (req, res) => {
+  try {
+    res.clearCookie('access-token');
+    return res.json(true);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 };
