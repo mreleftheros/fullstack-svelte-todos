@@ -8,8 +8,8 @@ exports.signup_post = async (req, res) => {
       req.body.password
     );
 
-    const { err } = User.validate(username, password);
-    if (err) {
+    const err = User.validate(username, password);
+    if (Object.keys(err).length > 0) {
       return res.status(400).json({ ...err, error: 'Validation failed.' });
     }
 

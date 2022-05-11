@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/auth';
 import Button from '../lib/Button';
 import { Navigate, Link } from 'react-router-dom';
@@ -12,41 +12,56 @@ const AuthBox = ({ signupMode = false }) => {
   const [passwordError, setPasswordError] = useState('');
   const { user, signup, login } = useContext(AuthContext);
 
+  const resetErrors = () => {
+    setError('');
+    setUsernameError('');
+    setPasswordError('');
+  };
+
+  useEffect(() => {
+    setUsername('');
+    setPassword('');
+  }, [signupMode]);
+
   const handleSubmit = async e => {
     e.preventDefault();
 
     if (!username || !password) return;
 
+    resetErrors();
     setIsLoading(true);
 
     if (signupMode) {
       try {
-        const data = await signup(
-          username,
-          password
-        );
+        const data = await signup(username, password);
 
-        if (data.error) setError(data.error);
         if (data.usernameError) setUsernameError(data.usernameError);
         if (data.passwordError) setPasswordError(data.passwordError);
+        if (data.error) {
+          setError(data.error);
+        } else {
+          setUsername('');
+          setPassword('');
+        }
       } catch (err) {
         setError(err.message);
       } finally {
         setIsLoading(false);
-        setUsername('');
-        setPassword('');
       }
     } else {
       try {
         const data = await login(username, password);
 
-        if (data.error) setError(data.error);
+        if (data.error) {
+          setError(data.error);
+        } else {
+          setUsername('');
+          setPassword('');
+        }
       } catch (err) {
         setError(err.message);
       } finally {
         setIsLoading(false);
-        setUsername('');
-        setPassword('');
       }
     }
   };
@@ -56,7 +71,12 @@ const AuthBox = ({ signupMode = false }) => {
   return (
     <section className='auth'>
       <h2 className='auth-title'>{signupMode ? 'Sign up' : 'Login'}</h2>
-      <form className='auth-form' autoComplete='off' onSubmit={handleSubmit}>
+      <form
+        className='auth-form'
+        autoComplete='off'
+        onSubmit={handleSubmit}
+        onBlur={resetErrors}
+      >
         <div className='auth-group'>
           <label className='auth-label' htmlFor='username'>
             Username

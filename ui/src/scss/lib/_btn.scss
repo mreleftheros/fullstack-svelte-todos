@@ -27,6 +27,16 @@
     color: $black;
   }
 
+  &-error {
+    background-color: $error;
+    color: $black;
+  }
+
+  &-small {
+    padding: .5rem 1.5rem;
+    font-size: 1.5rem;
+  }
+
   &:hover:not(:disabled) {
     transform: scale(0.975);
   }

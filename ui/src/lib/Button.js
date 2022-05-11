@@ -4,12 +4,13 @@ const Button = ({
   color = 'blue',
   onClick = null,
   disabled = false,
+  small = false,
 }) => {
   return (
     <button
       disabled={disabled}
       onClick={onClick}
-      className={`btn btn-${color}`}
+      className={`btn btn-${color} ${small && 'btn-small'}`}
       type={type}
     >
       {text}

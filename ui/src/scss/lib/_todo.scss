@@ -1,0 +1,25 @@
+@use '../abstract/' as *;
+
+.todo {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 80rem;
+  margin: 1rem auto;
+  background-color: $blackish;
+  padding: 1rem;
+  min-height: 5rem;
+  border-radius: 1rem;
+  color: $white;
+  
+  &-text {
+    flex: 1;
+    font-size: 2.5rem;
+  }
+
+  &-tools {
+    flex-basis: 30rem;
+    display: flex;
+    justify-content: space-around;
+  }
+}

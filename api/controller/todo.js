@@ -9,7 +9,7 @@ exports.index_post = async (req, res) => {
 
     const { _id } = await Todo.create(text, req.user._id);
 
-    return res.status(201).json({ _id, text, userId: req.user._id });
+    return res.status(201).json({ _id, isDone: false, text, userId: req.user._id });
   } catch (err) {
     console.log(err.message);
     return res.status(500).json({ error: err.message });
@@ -97,7 +97,7 @@ exports.idParam_delete = async (req, res) => {
 
     await Todo.deleteById(id);
 
-    return res.json(true);
+    return res.json({ ok: true });
   } catch (err) {
     console.log(err.message);
     return res.status(500).json({ error: err.message });

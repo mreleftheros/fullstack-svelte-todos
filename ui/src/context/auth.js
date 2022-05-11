@@ -72,7 +72,6 @@ const AuthProvider = ({ children }) => {
       const data = await res.json();
 
       if (data.error) {
-        console.log('error');
         dispatch({ type: 'RESET_USER' });
       } else {
         dispatch({
